@@ -1,0 +1,85 @@
+﻿@model WynUser
+@{
+    WynUser user = ViewBag.WynParams;
+}
+
+<script>
+    var wynUrl = "@user.WynUrl";
+    var username = "@user.Username";
+    var token = "@WynUser.AccessToken";
+    var wynVersion = "@user.Version";
+</script>
+
+<link rel="stylesheet" href="@Url.Content("https://cdn.jsdelivr.net/npm/@mdi/font@5.9.55/css/materialdesignicons.min.css")" />
+
+<!--Bootstrap-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!--HighlightJS-->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+
+<!--Wyn References-->
+<link rel="stylesheet" href="@Url.Content(user.WynUrl + "/api/themefiles/dashboard.vendor.css?theme=blue&version="+ user.Version +"&plugin=dashboards")" />
+<link rel="stylesheet" href="@Url.Content(user.WynUrl + "/api/themefiles/dashboard.app.css?theme=blue&version="+ user.Version +"&plugin=dashboards")" />
+<script src="@Url.Content(user.WynUrl + "/lib/polyfills.js")"></script>
+<script src="@Url.Content(user.WynUrl + "/api/PluginAssets/dashboards-"+ user.Version +"/dashboard.common.js")"></script>
+<script src="@Url.Content(user.WynUrl + "/api/PluginAssets/dashboards-"+ user.Version +"/dashboard.table.js")"></script>
+<script src="@Url.Content(user.WynUrl + "/api/PluginAssets/dashboards-"+ user.Version +"/dashboard.app.js")"></script>
+
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+<div class="row header">
+    <div id="pageHeader" class="col-md-10">
+        <button id="btnBack">
+            <i class="mdi mdi-arrow-left"></i>Home
+        </button>
+        <div id="wynHeader">
+            <img src="images/dashboard.svg" alt="dashboards" />
+            Wyn Dashboards
+        </div>
+        <div id="dashboardTitle">
+        </div>
+    </div>
+    <div class="col-md-2 showCodeDiv">
+        <div class="rightPanel">
+            <button id="btnSwitch" name="SwitchView" onclick="cmdButtonClick(this)">Design</button>
+            <button id="btnShowCode" title="View Code">
+                <i class="mdi mdi-xml"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<div id="page1">
+    <div class="row contentDiv">
+        <div class="col-md-2 categoryDiv">
+            <div class="createNewDiv">
+                <button id="btnCreateNew" class="createNew" name="NewDoc" onclick="cmdButtonClick(this)">
+                    <i class="mdi mdi-plus-thick"></i> Create New
+                </button>
+            </div>
+            <ul id="categoryList"></ul>
+        </div>
+        <div class="col-md-10 cardsContainer">
+            <div id="cardList" class="card-columns">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="page2">
+    <div>
+        <div id="designer"></div>
+        <div id="viewer"></div>
+    </div>
+</div>
+<div id="codePanel" class="hide">
+    <button id="btnCopyCode">
+        <i class="mdi mdi-content-copy"></i> Copy Code
+    </button>
+    <pre id="codePre">
+    <code id="codeElement">                        
+            </code>
+            </pre>
+</div>
