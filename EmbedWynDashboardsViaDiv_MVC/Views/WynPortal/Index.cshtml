@@ -1,6 +1,7 @@
 ﻿@model WynUser
 @{
     WynUser user = ViewBag.WynParams;
+    var gc = "@grapecity";
 }
 
 <script>
@@ -20,16 +21,9 @@
 <!--HighlightJS-->
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/default.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+<script src="./node_modules/@gc/wyn-integration/build/WynIntegration.js"></script>
 
-<!--Wyn References-->
-<link rel="stylesheet" href="@Url.Content(user.WynUrl + "/api/themefiles/dashboard.vendor.css?theme=blue&version="+ user.Version +"&plugin=dashboards")" />
-<link rel="stylesheet" href="@Url.Content(user.WynUrl + "/api/themefiles/dashboard.app.css?theme=blue&version="+ user.Version +"&plugin=dashboards")" />
-<script src="@Url.Content(user.WynUrl + "/lib/polyfills.js")"></script>
-<script src="@Url.Content(user.WynUrl + "/api/PluginAssets/dashboards-"+ user.Version +"/dashboard.common.js")"></script>
-<script src="@Url.Content(user.WynUrl + "/api/PluginAssets/dashboards-"+ user.Version +"/dashboard.table.js")"></script>
-<script src="@Url.Content(user.WynUrl + "/api/PluginAssets/dashboards-"+ user.Version +"/dashboard.app.js")"></script>
-
-<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/js/site.js"></script>
 
 <div class="row header">
     <div id="pageHeader" class="col-md-10">
@@ -69,10 +63,7 @@
     </div>
 </div>
 <div id="page2">
-    <div>
-        <div id="designer"></div>
-        <div id="viewer"></div>
-    </div>
+    <div id="wyn-root"></div>
 </div>
 <div id="codePanel" class="hide">
     <button id="btnCopyCode">

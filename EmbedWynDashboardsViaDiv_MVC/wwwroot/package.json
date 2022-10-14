@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@grapecity/wyn-integration": "^6.0.4"
+  }
+}

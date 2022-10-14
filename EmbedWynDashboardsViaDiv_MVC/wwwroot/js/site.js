@@ -3,13 +3,16 @@
     viewer = null,
     designer = null,
     categories = [],
-    selectedCat = null;
+    selectedCat = null,
+    wynIntegration = null;
 
 window.onload = () => {
 
     if (token == null) {
         window.location = "/Home/Index";
     }
+
+    wynIntegration = WynIntegration.WynIntegration;
 
     var backBtn = document.querySelector("#btnBack");
     backBtn.onclick = backBtn_click;
@@ -51,85 +54,42 @@ function loadCode(mode) {
             break;
 
         case "Viewer":
-            codeStr = `
- const viewer = WynDashboards.create('DashboardViewer', {
-    dashboardId: '`+ selectedDocument.id + `',
-    edition: 'EN',
-    size: "fitToScreen",
-    actions: "clearselection,annotation,analysispath",
-    openfulldashboardmode: "newwindow",
-    containerFilterScope: '',
-    version: '1.0.0',
-    userId: '`+ username + `',
-    lng: 'en',
-    baseUrl: '`+ wynUrl + `',
-    token: token,
- });
-
- viewer.initialize({
-    container: document.querySelector('#viewer'),
-    onClose: () => {
-       //console.log('close');
-    },
-    onLoaded: (docName) => {
-       //console.log('loaded');
-    },
- });`.trim();
+            codeStr = `wynIntegration.createDashboardViewer({
+                baseUrl: '`+ wynUrl + `',
+                dashboardId: '`+ selectedDocument.id + `',
+                token: token,               
+                // for v5.0, >v5.1 ignore
+                //version: '5.0.21782.0',
+            }, '#wyn-root').then(ins => {
+                viewer = ins;
+            });`.trim();
             break;
 
         case "Designer":
             codeStr = `
- const designer = WynDashboards.create('DashboardDesigner', {
-    edition: 'EN',
-    dashboardId: '`+ selectedDocument.id + `',
-    enableDeveloperMode: true,
-    containerFilterScope: '',
-    version: '1.0.0',
-    userId: '`+ username + `',
-    lng: 'en',
-    baseUrl: '`+ wynUrl + `',
-    token: token
- });
-
- designer.initialize({
-    container: document.querySelector('#designer'),
-    onClose: () => {
-        //console.log('close');
-    },
-    onSave: (docName) => {
-       //console.log('save');
-    },
-    onLoaded: (docName) => {
-        //console.log('loaded');
-    },
- });`.trim();
+ wynIntegration.createDashboardDesigner({
+        baseUrl: '`+ wynUrl + `',
+        dashboardId: '`+ selectedDocument.id + `',
+        lng: 'en',
+        token: token,
+        // for v5.0, >v5.1 ignore
+        //version: '5.0.21782.0',
+    }, '#wyn-root').then(ins => {
+        viewer = ins;
+    });`.trim();
             break;
-
         case "NewDesigner":
             codeStr = `
- const designer = WynDashboards.create('DashboardDesigner', {
-    edition: 'EN',    
-    enableDeveloperMode: true,
-    containerFilterScope: '',
-    version: '1.0.0',
-    userId: '`+ username + `',
-    lng: 'en',
-    baseUrl: '`+ wynUrl + `',
-    token: token
- });
-
- designer.initialize({
-    container: document.querySelector('#designer'),
-    onClose: () => {
-        //console.log('close');
-    },
-    onSave: (docName) => {
-       //console.log('save');
-    },
-    onLoaded: (docName) => {
-        //console.log('loaded');
-    },
- });`.trim();
+ wynIntegration.createDashboardDesigner({
+        baseUrl: '`+ wynUrl + `',
+        dashboardId: '',
+        lng: 'en',
+        token: token,
+        // for v5.0, >v5.1 ignore
+        //version: '5.0.21782.0',
+    }, '#wyn-root').then(ins => {
+        viewer = ins;
+    });`.trim();
             break;
     }
     document.querySelector("#codeElement").textContent = codeStr;
@@ -193,8 +153,7 @@ function loadDashboardList() {
 function backBtn_click() {
     document.querySelector("#page2").style.display = "none";
     document.querySelector("#page1").style.display = "block";
-    document.querySelector("#designer").style.display = "none";
-    document.querySelector("#viewer").style.display = "none";
+    document.querySelector("#wyn-root").style.display = "none";
     document.querySelector("#btnBack").style.display = "none";
     document.querySelector("#wynHeader").style.display = "block";
     document.querySelector("#btnSwitch").style.display = "none";
@@ -331,8 +290,7 @@ function cmdButtonClick(e) {
 
             document.querySelector("#page2").style.display = "block";
             document.querySelector("#page1").style.display = "none";
-            document.querySelector("#designer").style.display = "none";
-            document.querySelector("#viewer").style.display = "block";
+            document.querySelector("#wyn-root").style.display = "block";
             document.querySelector("#btnBack").style.display = "block";
             document.querySelector("#wynHeader").style.display = "none";
             document.querySelector("#btnSwitch").style.display = "block";
@@ -345,29 +303,17 @@ function cmdButtonClick(e) {
             if (viewer)
                 viewer.destroy();
 
-            viewer = WynDashboards.create('DashboardViewer', {
-                //scenario: "column-3",
-                dashboardId: docId,
-                edition: 'EN',
-                size: "fitToScreen",
-                actions: "clearselection,annotation,analysispath",
-                openfulldashboardmode: "newwindow",
-                containerFilterScope: '',
-                version: '1.0.0',
-                userId: username,
-                lng: 'en',
+            wynIntegration.createDashboardViewer({
                 baseUrl: wynUrl,
+                dashboardId: docId,
                 token: token,
+                //scenario: 'column-1'
+                // for v5.0, >v5.1 ignore
+                //version: '5.0.21782.0',
+            }, '#wyn-root').then(ins => {
+                viewer = ins;
             });
-            viewer.initialize({
-                container: document.querySelector('#viewer'),
-                onClose: () => {
-                    //console.log('close');
-                },
-                onLoaded: (docName) => {
-                    //console.log('loaded');
-                },
-            });
+
             break;
         case "EditDoc":
             cmdType = "edit";
@@ -382,46 +328,8 @@ function cmdButtonClick(e) {
             break;
         case "NewDoc":
             cmdType = "create";
-
-            document.querySelector("#page2").style.display = "block";
-            document.querySelector("#page1").style.display = "none";
-            document.querySelector("#designer").style.display = "block";
-            document.querySelector("#viewer").style.display = "none";
-            document.querySelector("#btnBack").style.display = "block";
-            document.querySelector("#wynHeader").style.display = "none";
-            document.querySelector("#btnSwitch").style.display = "none";
-            document.querySelector("#dashboardTitle").style.display = "block";
-            document.querySelector("#dashboardTitle").innerHTML = "New Dashboard";
-            document.querySelector("#codePanel").className = "hide";
-
             loadCode("NewDesigner");
-
-            if (designer)
-                designer.destroy();
-
-            designer = WynDashboards.create('DashboardDesigner', {
-                edition: 'EN',
-                enableDeveloperMode: true,
-                containerFilterScope: '',
-                version: '1.0.0',
-                userId: username,
-                lng: 'en',
-                baseUrl: wynUrl,
-                token: token
-            });
-            designer.initialize({
-                container: document.querySelector('#designer'),
-                onClose: () => {
-                    //console.log('close');
-                },
-                onSave: (docName) => {
-                    //console.log('save');
-                    //refreshList();
-                },
-                onLoaded: (docName) => {
-                    //console.log('loaded');
-                },
-            });
+            initializeDesigner('');
             break;
         case "RefreshList":
             cmdType = "refresh";
@@ -439,39 +347,25 @@ function cmdButtonClick(e) {
 function initializeDesigner(docId) {
     document.querySelector("#page2").style.display = "block";
     document.querySelector("#page1").style.display = "none";
-    document.querySelector("#designer").style.display = "block";
-    document.querySelector("#viewer").style.display = "none";
+    document.querySelector("#wyn-root").style.display = "block";
     document.querySelector("#btnBack").style.display = "block";
     document.querySelector("#wynHeader").style.display = "none";
     document.querySelector("#btnSwitch").style.display = "none";
     document.querySelector("#dashboardTitle").style.display = "block";
     document.querySelector("#codePanel").className = "hide";
 
-    if (designer)
-        designer.destroy();
+    if (viewer)
+        viewer.destroy();
 
-    designer = WynDashboards.create('DashboardDesigner', {
-        edition: 'EN',
-        dashboardId: docId,
-        enableDeveloperMode: true,
-        containerFilterScope: '',
-        version: '1.0.0',
-        userId: username,
-        lng: 'en',
+    wynIntegration.createDashboardDesigner({
         baseUrl: wynUrl,
-        token: token
-    });
-    designer.initialize({
-        container: document.querySelector('#designer'),
-        onClose: () => {
-            //console.log('close');
-        },
-        onSave: (docName) => {
-            //console.log('save');
-        },
-        onLoaded: (docName) => {
-            //console.log('loaded');
-        },
+        dashboardId: docId,
+        lng: 'en',
+        token: token,
+        // for v5.0, >v5.1 ignore
+        //version: '5.0.21782.0',
+    }, '#wyn-root').then(ins => {
+        viewer = ins;
     });
 }
 
