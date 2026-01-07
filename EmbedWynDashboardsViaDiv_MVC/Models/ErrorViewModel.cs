@@ -1,5 +1,3 @@
-using System;
-
 namespace EmbedWynDashboardsViaDiv_MVC.Models
 {
     public class ErrorViewModel
