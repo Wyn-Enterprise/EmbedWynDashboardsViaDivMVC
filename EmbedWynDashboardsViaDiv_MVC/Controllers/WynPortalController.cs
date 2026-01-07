@@ -1,9 +1,6 @@
 ﻿using EmbedWynDashboardsViaDiv_MVC.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EmbedWynDashboardsViaDiv_MVC.Controllers
 {
@@ -12,6 +9,7 @@ namespace EmbedWynDashboardsViaDiv_MVC.Controllers
         public IActionResult Index(string url, string username, string version)
         {
             ViewBag.WynParams = new WynUser() { WynUrl = url.TrimEnd('/'), Username = username, Version = version.ToString() };
+            ViewBag.AccessToken = HttpContext.Session.GetString("AccessToken");
             return View();
         }
     }

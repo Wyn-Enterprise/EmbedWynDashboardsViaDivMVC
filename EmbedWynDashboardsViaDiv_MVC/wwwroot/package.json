@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "@grapecity/wyn-integration": "^7.0.40"
+    "@wynenterprise/wyn-integration": "^9.0.0286"
   }
 }
