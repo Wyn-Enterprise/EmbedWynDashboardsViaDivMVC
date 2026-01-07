@@ -6,7 +6,7 @@ This sample showcases the newly added APIs in Wyn Enterprise to integrate the Wy
 
 Here's a sample screen shot of the output on running this sample
 
-![alt text](Screenshot.PNG)
+![Demo screenshot](./Screenshot.png)
 
 **Setup Wyn Enterprise**
 
