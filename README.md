@@ -14,33 +14,10 @@ Here's a sample screen shot of the output on running this sample
 2. Go to 'Configurations -> System Configurations'
 3. Add 'http://localhost:3000' under the 'Allowed CORS Origins' section and click Save.
 
-**Steps before running the sample**
+**Run The Sample**
 
-1. Changing Target Framework from .Net6.0 to . Net8.0
-2. Update the packages.
-3. If Under Dependencies you see this warning:
-   npm(wwwroot\package.json)
-   @wynenterprise/wyn-integration – not installed
-
-Follow the below steps to fix it:
-What the warning means:
-@wynenterprise/wyn-integration – not installed
-This means:
-• package.json declares the dependency
-• node_modules/@wynenterprise/wyn-integration does not exist
-• Visual Studio therefore shows a warning under Dependencies → npm
-ASP.NET Core does not automatically restore npm packages
-Open a terminal in wwwroot
-From your project root:
-Use Visual Studio → Right-click wwwroot → Open in Terminal
-Install the package
-npm install @wynenterprise/wyn-integration
-This will:
-• Create node_modules
-• Download Wyn integration scripts
-• Remove the warning in Visual Studio
-
-4. Now run from the application
+1. Open the terminal in VS Code or Visual Studio and change to the subfolder: EmbedWynDashboardsVisDivMVC
+2. Run the application: dotnet run 
 5. Enter in the shown login screen:
    Wyn Server Url,
    username,
